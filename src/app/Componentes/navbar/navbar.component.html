@@ -1,0 +1,143 @@
+<nav class="flex p-5 bg-footerbg text-white shadow items-center justify-between">
+  <div class="flex items-center space-x-3">
+    <a [routerLink]="['/']" class="flex items-center">
+      <img src="../../../assets/icons/Logo-TemaClaro.svg" class="h-20 w-auto overflow-clip mr-2" alt="Logo" />
+      <div class="flex flex-col">
+        <h2 class="text-1xl font-arcade">Otaku</h2>
+        <h2 class="text-1xl font-arcade">Lounge</h2>
+      </div>
+    </a>
+  </div>
+
+  <ul class="md:flex space-x-10 hidden">
+    <li>
+      <a
+        [routerLink]="['/']"
+        routerLinkActive="text-primary"
+        [routerLinkActiveOptions]="{exact: true}"
+        class="text-l hover:text-primary transition-all duration-500"
+      >Home</a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['/anime']"
+        routerLinkActive="text-primary"
+        class="text-l hover:text-primary transition-all duration-500"
+      >Animes</a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['/filme']"
+        routerLinkActive="text-primary"
+        class="text-l hover:text-primary transition-all duration-500"
+      >Filmes</a>
+    </li>
+  </ul>
+
+  <div class="flex items-center space-x-4">
+    <button class="text-2xl" (click)="openSearchModal()">
+      <ion-icon name="search" class="hover:text-primary transition-all duration-500"></ion-icon>
+    </button>
+    <a href="https://github.com/AllanRDS/OtakuLounge" target="_blank" class="text-2xl">
+      <ion-icon name="logo-github" class="hover:text-primary transition-all duration-500"></ion-icon>
+    </a>
+    <span (click)="toggleMenu()" class="text-3xl cursor-pointer md:hidden block">
+      <ion-icon *ngIf="!isMenuVisible" name="menu"></ion-icon>
+      <ion-icon *ngIf="isMenuVisible" name="close"></ion-icon>
+    </span>
+  </div>
+</nav>
+
+<div *ngIf="isMenuVisible" class="md:hidden transition-all bg-footerbg p-5 text-white text-xl">
+  <ul class="space-y-4 flex flex-col items-center">
+    <li>
+      <a
+        [routerLink]="['/']"
+        routerLinkActive="text-primary"
+        [routerLinkActiveOptions]="{exact: true}"
+        class="hover:text-primary"
+      >Home</a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['/anime']"
+        routerLinkActive="text-primary"
+        class="hover:text-primary"
+      >Animes</a>
+    </li>
+    <li>
+      <a
+        [routerLink]="['/filme']"
+        routerLinkActive="text-primary"
+        class="hover:text-primary"
+      >Filmes</a>
+    </li>
+  </ul>
+</div>
+
+<!-- Modal de Pesquisa -->
+<div *ngIf="isSearchModalOpen" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+  <div class="bg-footerbg p-6 rounded-lg w-11/12 max-w-md max-h-[80vh] overflow-y-auto">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold text-white">Pesquisar</h2>
+      <button (click)="closeSearchModal()" class="text-2xl">
+        <ion-icon name="close" class="text-white"></ion-icon>
+      </button>
+    </div>
+
+    <div class="flex mb-4">
+      <input
+        id="search-input"
+        type="text"
+        [(ngModel)]="searchTerm"
+        (keyup.enter)="searchAnimes()"
+        placeholder="Digite o nome do anime"
+        class="w-full p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary"
+        style="
+        background-color: #2D2D2D;
+        outline: none;
+        box-shadow: 0 0 0 2px rgb(124 58 237 / var(--tw-ring-opacity, 1));
+        border-color: transparent;
+        color: white
+        ;"
+      />
+      <button
+        (click)="searchAnimes()"
+        class="ml-2 bg-primary text-white p-2 rounded flex items-center justify-center"
+      >
+        <ion-icon name="search" class="text-xl"></ion-icon>
+      </button>
+    </div>
+
+    <!-- Mensagem de Erro -->
+    <div *ngIf="errorMessage" class="text-red-500 mb-4 text-center">
+      {{ errorMessage }}
+    </div>
+
+    <!-- Estado de Carregamento -->
+    <div *ngIf="isLoading" class="flex justify-center items-center">
+      <span class="animate-spin">🔄</span>
+      <span class="ml-2 text-white">Carregando...</span>
+    </div>
+
+    <!-- Resultados de Pesquisa -->
+    <div *ngIf="!isLoading && searchResults.length > 0" class="grid gap-4">
+      <div *ngFor="let anime of searchResults"
+        class="flex items-center bg-[#2D2D2D] rounded-2xl p-3 hover:bg-gray-600 transition cursor-pointer"
+        (click)="navigateToAnimeDetails(anime.mal_id)">
+        <img
+        [src]="anime.images.jpg.large_image_url || ''"
+        [alt]="anime.title"
+        class="w-24 h-26 object-cover mr-4 rounded-xl"
+      />
+        <div>
+          <h3 class="font-bold text-white">{{ anime.title }}</h3>
+          <p class="text-sm text-white">
+            {{ anime.type }}
+            {{ anime.year ? '- ' + anime.year : '' }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

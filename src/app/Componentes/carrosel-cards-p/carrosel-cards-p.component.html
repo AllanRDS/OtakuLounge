@@ -1,0 +1,64 @@
+<div class="mt-20">
+  <div class="flex items-center mb-4">
+    <span class="text-primary text-[2rem] font-bold" style="line-height: 1;">|</span>
+    <h2 class="text-2xl text-white font-bold ml-2 mb-0">Personagens Populares</h2>
+  </div>
+
+  <!-- Estado de Carregamento -->
+  <div *ngIf="isLoading" class="carousel-container overflow-hidden">
+    <div class="carousel flex">
+      <div *ngFor="let _ of [].constructor(10)"
+        class="animate-pulse relative w-48 h-64 sm:w-64 sm:h-72 md:w-72 md:h-80 lg:w-80 lg:h-96 mr-4 flex-shrink-0">
+        <div class="bg-gray-700 w-full h-full rounded-lg"></div>
+        <div class="mt-2 h-4 bg-gray-700 rounded w-3/4"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estado de Erro -->
+  <div *ngIf="loadError" class="text-center text-red-500 p-4">
+    {{ loadError }}
+  </div>
+
+  <!-- Personagens Carrosel -->
+  <div *ngIf="!isLoading && !loadError"
+    class="carousel-container overflow-hidden mb-20"
+    #carousel
+    (mousedown)="startDrag($event)"
+    (touchstart)="startDrag($event)"
+    (mouseup)="endDrag()"
+    (touchend)="endDrag()"
+    (mouseleave)="endDrag()"
+    (mousemove)="drag($event)"
+    (touchmove)="drag($event)"
+  >
+    <div class="carousel flex" (dragstart)="preventDrag($event)">
+      <div *ngFor="let character of charactersList; let i = index"
+        class="relative w-48 h-64 sm:w-64 sm:h-72 md:w-72 md:h-80 lg:w-80 lg:h-96 mr-4 group flex-shrink-0 cursor-grab transition-all duration-300 ease-in-out"
+        appHoverZoom>
+
+        <!-- Rank dos Personagens -->
+        <div class="absolute top-2 left-2 z-10 bg-black/70 text-white px-2 py-1 rounded-full text-xs">
+          #{{ i + 1 }}
+        </div>
+
+        <!-- Favoritos -->
+        <div class="absolute top-2 right-2 z-10 bg-black/70 rounded-full overflow-hidden">
+          <div class="flex items-center px-2 py-1">
+            <ion-icon name="heart" class="text-red-500 mr-1 text-xs"></ion-icon>
+            <span class="text-white text-xs">{{ character.favorites | number:'1.0-0':'pt-BR' }}</span>
+          </div>
+        </div>
+
+        <img [src]="character.images?.jpg?.image_url" [alt]="character.name"
+          class="w-full h-full rounded-lg object-cover" (dragstart)="preventDrag($event)" />
+
+        <div class="absolute bottom-0 left-0 right-0 bg-black/70 p-2 rounded-b-lg">
+          <h3 class="text-white text-sm font-semibold text-center">
+            {{ character.name | truncate:20 }}
+          </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<div class="my-4">
+  <div class="flex items-center mb-4">
+    <span class="text-primary text-[2rem] font-bold" style="line-height: 1;">|</span>
+    <h2 class="text-2xl text-white font-bold ml-2 mb-0">Animes Lançamento</h2>
+  </div>
+
+  <div
+    class="carousel-container overflow-hidden cursor-grab"
+    #carousel
+    (mousedown)="startDrag($event)"
+    (touchstart)="startTouch($event)"
+    (mouseup)="endDrag()"
+    (mouseleave)="endDrag()"
+    (mousemove)="drag($event)"
+    (touchmove)="drag($event)"
+    (touchend)="endDrag()"
+  >
+    <div
+      class="carousel flex"
+      (dragstart)="preventDrag($event)"
+    >
+      <div
+        *ngFor="let anime of seasonUpcomingList"
+        class="relative w-48 h-64 sm:w-64 sm:h-72 md:w-72 md:h-80 lg:w-80 lg:h-96 mr-4 group flex-shrink-0"
+      >
+        <img
+          [src]="anime.images.jpg.large_image_url"
+          alt="{{ anime.title }}"
+          class="w-full h-full rounded-t object-cover"
+          (dragstart)="preventDrag($event)"
+        />
+        <div class="absolute bottom-0 left-0 right-0 text-white bg-black bg-opacity-70 p-2 text-center rounded-b">
+          <span class="font-bold transition-opacity duration-300 group-hover:opacity-0">
+            {{ anime.title | truncate:25 }}
+          </span>
+        </div>
+        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300 flex items-center justify-center">
+          <ion-icon name="play" class="text-white text-4xl font-bold"></ion-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

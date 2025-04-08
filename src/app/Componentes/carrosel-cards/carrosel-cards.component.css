@@ -1,0 +1,57 @@
+.carousel-container {
+  cursor: grab; /* Muda o cursor para indicar que pode ser arrastado */
+  width: 100%; /* Certifique-se de que o contêiner ocupa toda a largura disponível */
+  touch-action: none;
+  user-select: none;
+
+}
+
+.carousel:active {
+  cursor: grabbing; /* Muda o cursor quando está sendo arrastado */
+}
+
+.carousel {
+  display: flex; /* Flexbox para alinhar os cards horizontalmente */
+}
+
+
+img {
+  border-radius: 0.5rem; /* Arredondamento das bordas da imagem */
+}
+
+.absolute {
+  bottom: 0; /* Posiciona o texto na parte inferior do card */
+  left: 0;
+  right: 0;
+  text-align: center; /* Centraliza o texto */
+}
+
+.carousel-container {
+  user-select: none; /* Impede a seleção de texto */
+}
+
+.relative {
+  width: 12rem; /* Tamanho padrão para telas pequenas */
+  height: 15rem; /* Tamanho padrão para telas pequenas */
+}
+/* Media Queries para Responsividade */
+@media (min-width: 640px) {
+  .relative {
+    width: 11rem; /* Tamanho para telas pequenas e acima */
+    height: 15rem; /* Tamanho para telas pequenas e acima */
+  }
+}
+
+@media (min-width: 768px) {
+  .relative {
+    width: 11rem; /* Tamanho para telas médias e acima */
+    height: 15rem; /* Tamanho para telas médias e acima */
+  }
+}
+
+@media (min-width: 1024px) {
+  .relative {
+    width: 17rem; /* Tamanho para telas grandes e acima */
+    height: 25rem; /* Tamanho para telas grandes e acima */
+  }
+}
